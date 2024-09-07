@@ -10,18 +10,19 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
-    - name: Download and Install ChromeDriver
-      run: |
-        $version = "114.0.5735.90"
-        Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/$version/chromedriver_win32.zip" -OutFile "chromedriver.zip"
-        Expand-Archive -Path chromedriver.zip -DestinationPath "C:\CommonExePath\"
+    - uses: actions/checkout@v2
+    - uses: nanasess/setup-chromedriver@v2
+    - run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
     - name: Restore dependencies
       run: dotnet restore
     - name: Build the solution
