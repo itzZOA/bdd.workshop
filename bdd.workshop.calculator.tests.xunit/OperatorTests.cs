@@ -61,6 +61,16 @@ namespace bdd.workshop.calculator.tests.xunit
         //    Assert.True(Operator.Divide(a, b) == result);
         //}
 
+
+        [Fact]
+        [Trait("TestType", "UT")]
+        public void BasicSquareRoot()
+        {
+            int a = 25;
+            double result = 5;
+            Assert.True(Operator.SquareRoot(a) == result);
+        }
+
         [Theory(DisplayName ="Prime Number Theory")]
         [Trait("TestType","Theory")]
         [InlineData(0, PrimeNumberInfo.Unknown)]
