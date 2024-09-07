@@ -17,11 +17,11 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 8.0.x
-    - name: Install ChromeDriver
+    - name: Download and Install ChromeDriver
       run: |
-        choco install chromedriver --version=114.0.5735.90
-        mkdir C:\CommonExePath\
-        copy "C:\ProgramData\chocolatey\lib\chromedriver\tools\chromedriver.exe" "C:\CommonExePath\"
+        $version = "114.0.5735.90"
+        Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/$version/chromedriver_win32.zip" -OutFile "chromedriver.zip"
+        Expand-Archive -Path chromedriver.zip -DestinationPath "C:\CommonExePath\"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build the solution
