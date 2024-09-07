@@ -30,6 +30,8 @@ namespace bdd.workshop.calculator
 
         public static double Divide(int a, int b) => ((double)a) / ((double)b);
 
+        public static double SquareRoot(int a) => (Math.Sqrt(a));
+
         public static int Substract(int a, int b) => a - b;
 
         public static PrimeNumberInfo IsPrimeNumber(int number)
