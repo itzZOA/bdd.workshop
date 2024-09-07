@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -25,10 +25,8 @@ jobs:
       run: google-chrome --version
     - name: Install ChromeDriver
       run: |
-        sudo apt-get install -y unzip
-        wget -N https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip -d /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
+        choco install googlechrome --version=114.0.5735.90
+        choco install chromedriver --version=114.0.5735.90
     - name: Restore dependencies
       run: dotnet restore
     - name: Build the solution
