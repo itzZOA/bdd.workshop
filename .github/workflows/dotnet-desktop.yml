@@ -17,11 +17,9 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 8.0.x
-    - name: Download and Install ChromeDriver in C:\CommonExePath\
+    - name: Create directory and install ChromeDriver
       run: |
-        if (!(Test-Path "C:\CommonExePath\")) {
-          New-Item -Path "C:\CommonExePath" -ItemType Directory -Force
-        }
+        New-Item -Path "C:\CommonExePath" -ItemType Directory -Force
         Invoke-WebRequest -Uri "https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/win64/chromedriver-win64.zip" -OutFile "chromedriver.zip"
         Expand-Archive -Path chromedriver.zip -DestinationPath "C:\CommonExePath\"
         Remove-Item -Force chromedriver.zip
