@@ -10,24 +10,24 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 8.0.x
-    - uses: actions/checkout@v2
-    - uses: nanasess/setup-chromedriver@v2
-    - name: Install ChromeDriver for Chrome 128
+    - name: Download and Install ChromeDriver in C:\CommonExePath\
       run: |
-        sudo apt-get install -y unzip
-        wget -N https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/linux64/chromedriver-linux64.zip
-        unzip chromedriver-linux64.zip -d /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
+        if (!(Test-Path "C:\CommonExePath\")) {
+          New-Item -Path "C:\CommonExePath" -ItemType Directory -Force
+        }
+        Invoke-WebRequest -Uri "https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/win64/chromedriver-win64.zip" -OutFile "chromedriver.zip"
+        Expand-Archive -Path chromedriver.zip -DestinationPath "C:\CommonExePath\"
+        Remove-Item -Force chromedriver.zip
     - name: Restore dependencies
       run: dotnet restore
     - name: Build the solution
       run: dotnet build --no-restore
-    - name: Run tests
-      run: dotnet test --no-build  --filter "Category!=Selenium" --verbosity normal
+    - name: Run tests excluding Selenium
+      run: dotnet test --no-build --filter "Category!=Selenium" --verbosity normal
