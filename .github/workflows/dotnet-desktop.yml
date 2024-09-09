@@ -28,4 +28,4 @@ jobs:
     - name: Build the solution
       run: dotnet build --no-restore
     - name: Run tests excluding Selenium
-      run: dotnet test --no-build --filter "Category!=Selenium" --verbosity normal
+      run: dotnet test --no-build --filter --verbosity normal
