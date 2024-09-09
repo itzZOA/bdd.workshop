@@ -12,14 +12,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
-    - name: Create directory and install ChromeDriver
+    - name: Install ChromeDriver for Chrome 128
       run: |
-        New-Item -Path "C:\CommonExePath" -ItemType Directory -Force
+        if (!(Test-Path "C:\CommonExePath\")) {
+          New-Item -Path "C:\CommonExePath" -ItemType Directory -Force
+        }
         Invoke-WebRequest -Uri "https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/win64/chromedriver-win64.zip" -OutFile "chromedriver.zip"
         Expand-Archive -Path chromedriver.zip -DestinationPath "C:\CommonExePath\"
         Remove-Item -Force chromedriver.zip
@@ -27,4 +29,8 @@ jobs:
       run: dotnet restore
     - name: Build the solution
       run: dotnet build --no-restore
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+
+   
    
